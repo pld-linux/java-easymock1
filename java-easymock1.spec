@@ -6,13 +6,16 @@ Version:	1.2
 Release:	0.1
 License:	MIT
 Group:		Libraries/Java
-Source0:	https://sourceforge.net/projects/easymock/files/EasyMock/1.2/easymock1.2_Java1.5.zip/download
+Source0:	https://sourceforge.net/projects/easymock/files/EasyMock/1.2/easymock1.2_Java1.5.zip
 # Source0-md5:	828a04a6b901917cb995c316ee542f2f
+Source1:	easymock.pom
 URL:		http://easymock.org
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.555
 BuildRequires:	unzip
+Requires(post):	jpackage-utils >= 0:1.7.2
+Requires(postun):	jpackage-utils >= 0:1.7.2
 Requires:	jpackage-utils
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -95,8 +98,19 @@ cp -a demo/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 install -d $RPM_BUILD_ROOT%{_javasrcdir}
 cp -a src.zip $RPM_BUILD_ROOT%{_javasrcdir}/%{srcname}.src.jar
 
+# maven stuff
+install -d $RPM_BUILD_ROOT%{_datadir}/maven2/poms
+install -p %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/maven2/poms/JPP.%{srcname}.pom
+%add_to_maven_depmap easymock easymock %{version} JPP %{srcname}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%update_maven_depmap
+
+%postun
+%update_maven_depmap
 
 %post javadoc
 ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
@@ -106,6 +120,8 @@ ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 %{_javadir}/%{srcname}.jar
 %{_javadir}/%{srcname}-%{version}.jar
 %{_javadir}/easymock-%{version}.jar
+%{_datadir}/maven2/poms/JPP.%{srcname}.pom
+%{_mavendepmapfragdir}/%{name}
 
 %files demo
 %defattr(644,root,root,755)
