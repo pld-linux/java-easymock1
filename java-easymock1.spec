@@ -6,8 +6,10 @@ Version:	1.2
 Release:	0.1
 License:	MIT
 Group:		Libraries/Java
-Source0:	https://sourceforge.net/projects/easymock/files/EasyMock/1.2/easymock1.2_Java1.5.zip
-# Source0-md5:	828a04a6b901917cb995c316ee542f2f
+# Each time I download it from SF it has different md5.
+# Source0:	https://sourceforge.net/projects/easymock/files/EasyMock/1.2/easymock1.2_Java1.5.zip
+Source0:	http://execve.pl/PLD/easymock%{version}_Java1.5.zip
+# Source0-md5:	2d56a3bca42bca46b196b435b13e8b0f
 Source1:	easymock.pom
 URL:		http://easymock.org
 BuildRequires:	jpackage-utils
