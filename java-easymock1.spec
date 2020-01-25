@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.java
 %define		srcname		easymock1
 Summary:	easymock
 Name:		java-easymock1
